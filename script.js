@@ -13,15 +13,21 @@ const bookList = [
     },
 ];
 
-const searchInput = null;
+ /* const searchField = document.children[0].children[1].children[1].children[1]; */
+ const searchField = document.getElementById('searchField')
+console.log(searchField);
 
-function handleKeyPress(input) {
+/* keydown, keyup */
+
+searchField.addEventListener('keyup', handleKeyPress);
+
+function handleKeyPress(e) {
     /* Ta emot/läsa av värdet i inputfältet.
           Sicka värdet till searchBooks  
           searchBooks returnerar en filtrerad lista
           filtrerade listan skickas till renderBookList
       */
-    searchBooks(input);
+    searchBooks(e.target.value);
 }
 
 function searchBooks(searchTerm) {
@@ -42,11 +48,7 @@ function searchBooks(searchTerm) {
         }
     }
     renderBookList(filteredList);
-
-
 }
-
-handleKeyPress('e')
 
 function renderBookList(list) {
     console.log(list);
