@@ -19,39 +19,26 @@ const searchField = document.getElementById("searchField");
 
 /* keydown, keyup */
 
-searchField.addEventListener("keyup", handleKeyPress);
+searchField.addEventListener("keyup", (e) =>
+    renderBookList(
+        bookList.filter(({ title, author }) => {
+            const searchTerm = e.target.value.toLowerCase();
+            return title.toLowerCase().indexOf(searchTerm) >= 0 || author.toLowerCase().indexOf(searchTerm) >= 0;
+        })   
+    )
+);
 
-function handleKeyPress(e) {
-    /* Ta emot/läsa av värdet i inputfältet.
-            Sicka värdet till searchBooks  
-            searchBooks returnerar en filtrerad lista
-            filtrerade listan skickas till renderBookList
-        */
-    searchBooks(e.target.value);
-}
+/*function searchBooks(searchTerm) {
 
-function searchBooks(searchTerm) {
-    /*  Loopa igenom bookList
-            För varje varn i loppen, ta det aktuella elementet (boken)
-            jämnför titeln med söktermen
-            Om söktermen finns någonstans i titeln, lägg till elementet i ny lista (filteredList)
-            Returnerar filteredList eller anropar renderBookList?
-    
-    
-        */
-    const filteredList = [];
-    for (let i = 0; i < bookList.length; i++) {
-        const title = bookList[i].title.toLowerCase();
+    const filteredList = bookList.filter(({ title, author }) => 
+    (title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0 || 
+    author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0 )); 
+    */
 
-        if (title.indexOf(searchTerm.toLowerCase()) >= 0) {
-            filteredList.push(bookList[i]);
-        }
-    }
-    renderBookList(filteredList);
-}
+
 
 function renderBookList(bookList) {
-    
+
 
     const existingElement = document.querySelector('.book-list');
     console.log(existingElement);
@@ -60,7 +47,7 @@ function renderBookList(bookList) {
     if (existingElement) {
         root.removeChild(existingElement);
     }
-    if(bookList.length > 0) {
+    if (bookList.length > 0) {
         root.insertAdjacentHTML('beforeend', BookList(bookList));
     }
 
