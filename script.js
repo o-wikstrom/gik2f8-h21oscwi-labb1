@@ -38,7 +38,7 @@ function searchBooks(searchTerm) {
         const title = bookList[i].title.toLowerCase();
         
         if (title.indexOf(searchTerm.toLowerCase()) >= 0) {
-            filteredList.push(bookList[0]);
+            filteredList.push(bookList[i]);
         }
     }
     renderBookList(filteredList);
