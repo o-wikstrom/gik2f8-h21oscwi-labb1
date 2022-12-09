@@ -26,10 +26,10 @@ function renderBookList(bookList) {
 
   bookList.length > 0 && searchField.value && root.insertAdjacentHTML('beforeend', BookList(bookList));
 
-    let bookUl = document.querySelector(".book-list");
+    let bookInfo = document.querySelector(".book-list");
 
-    if (bookUl){ /* kollar om listan inte är null*/
-        bookUl.addEventListener("mouseover", function(e) {
+    if (bookInfo){ /* kollar om listan inte är null*/
+        bookInfo.addEventListener("mouseover", function(e) {
             if (e.target && e.target.matches("li.book-list__item")) {
                 let bookId = e.target.value
                 let book = bookList.find(book => book.id === bookId)
@@ -37,7 +37,7 @@ function renderBookList(bookList) {
             }
         });
 
-        bookUl.addEventListener("mouseout", function(e) { /* gör så bilden försvinner när mussen inte pekar*/
+        bookInfo.addEventListener("mouseout", function(e) { /* gör så bilden försvinner när mussen inte pekar*/
             let bookDetail = document.querySelector("#bookDetail");
             if(bookDetail)
                 bookDetail.remove();
