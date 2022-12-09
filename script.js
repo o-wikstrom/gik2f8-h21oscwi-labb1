@@ -1,60 +1,49 @@
-"use strict";
-/*  Vad ska vi göra här? */
+'use strict';
+
 let bookList = [];
 
 window.addEventListener('load', () => {
-    getAll().then(apiBooks => (bookList = apiBooks));
-})
+  getAll().then((apiBooks) => (bookList = apiBooks));
+});
 
-/* const searchField = document.children[0].children[1].children[1].children[1]; */
-const searchField = document.getElementById("searchField");
-
-
-/* keydown, keyup */
-searchField.addEventListener('keyup', (e) => searchBooks(e.target.value));
-/*searchField.addEventListener("keyup", (e) =>
-    renderBookList(
-        bookList.filter(({ title, author }) => {
-            const searchTerm = e.target.value.toLowerCase();
-            return title.toLowerCase().indexOf(searchTerm) >= 0 || author.toLowerCase().indexOf(searchTerm) >= 0;
-        })   
-    )
-);*/
-
-async function searchBooks(searchTerm) {
-
-    renderBookList(
-        bookList.filter(
-            ({ title, author }) =>
-                title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0 ||
-                author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0
-
-        )
-    );
-}
-
-
-
-
-const filteredList = bookList.filter(({ title, author }) =>
-(title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0 ||
-    author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0));
-
-
-
+searchField.addEventListener('keyup', (e) =>
+  renderBookList(
+    bookList.filter(({ title, author }) => {
+      const searchTerm = e.target.value.toLowerCase();
+      return (
+        title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        author.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+  )
+);
 
 function renderBookList(bookList) {
+  const existingElement = document.querySelector('.book-list'); 
 
+  const root = document.getElementById('root');
+  existingElement && root.removeChild(existingElement);
 
-    const existingElement = document.querySelector('.book-list');
-    console.log(existingElement);
+  bookList.length > 0 && searchField.value && root.insertAdjacentHTML('beforeend', BookList(bookList));
 
-    const root = document.getElementById('root');
-    if (existingElement) {
-        root.removeChild(existingElement);
+    let bookUl = document.querySelector(".book-list");
+
+    if (bookUl){ /* kollar om listan inte är null*/
+        bookUl.addEventListener("mouseover", function(e) {
+            if (e.target && e.target.matches("li.book-list__item")) {
+                let bookId = e.target.value
+                let book = bookList.find(book => book.id === bookId)
+                bookList.length > 0 && searchField.value && root.insertAdjacentHTML('beforeend', bookDetails(book)); /* visar omslagsbild för boken, från bookdetails*/
+            }
+        });
+
+        bookUl.addEventListener("mouseout", function(e) { /* gör så bilden försvinner när mussen inte pekar*/
+            let bookDetail = document.querySelector("#bookDetail");
+            if(bookDetail)
+                bookDetail.remove();
+        });
     }
-    if (bookList.length > 0 && searchField.value) {
-        root.insertAdjacentHTML('beforeend', BookList(bookList));
-    }
-
 }
+
+
+
